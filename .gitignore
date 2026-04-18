@@ -1,2 +1,6 @@
-audio/
+# Commit the split MP3 parts (each < 100 MB, GitHub Pages serves with correct
+# audio/mpeg MIME). Exclude the 207 MB original + ad-hoc tooling.
+audio/book-33.mp3
+audio/book-33.meta.json
 gen_audio.py
+split_mp3.py
