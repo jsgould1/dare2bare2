@@ -4922,6 +4922,7 @@ function openBook(id) {
   const art = document.getElementById('book-content-' + id);
   if (art) { art.style.display = ''; }
   buildToc(book);
+  premiumShowForBook(id);
   document.getElementById('story-scroll').scrollTop = 0;
   updateProgress();
 }
