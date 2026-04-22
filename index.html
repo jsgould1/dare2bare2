@@ -7312,31 +7312,39 @@ document.addEventListener('touchmove', function(){ _premiumLastManualScroll = Da
 
 function _premiumUpdateActivePara(audio){
   if(!window.AUDIO_PARA_TIMES || Object.keys(AUDIO_PARA_TIMES).length === 0) return;
-  // Absolute audio time = sum of previous part durations + current audio.currentTime
-  var abs_time = audio.currentTime;
-  var parts = _premiumParts || [];
+  if(!currentBookId) return;
+  // Compute absolute audio time = sum of previous part durations + current playback time
+  var abs_time = audio.currentTime || 0;
+  var partDurs = (window.AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[currentBookId]) || [];
   for(var i = 0; i < (_premiumPartIdx || 0); i++){
-    var dur = (window.AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[33] && AUDIO_PART_DURATIONS[33][i]) || 0;
-    abs_time += dur;
+    abs_time += partDurs[i] || 0;
   }
-  // Find paragraph whose start time is the largest value <= abs_time
+  // Find the paragraph whose start time is the largest value <= abs_time
   var bestId = null, bestT = -1;
   for(var pid in AUDIO_PARA_TIMES){
     var t = AUDIO_PARA_TIMES[pid];
     if(t <= abs_time && t > bestT){ bestT = t; bestId = pid; }
   }
   if(!bestId || bestId === _premiumActivePara) return;
+  // Scope queries to the CURRENT book's article (each book has its own data-para IDs)
+  var art = document.getElementById('book-content-' + currentBookId);
+  if(!art) return;
   // Remove highlight from previous
   if(_premiumActivePara){
-    var prev = document.querySelector('[data-para="'+_premiumActivePara+'"]');
+    var prev = art.querySelector('[data-para="'+CSS.escape(_premiumActivePara)+'"]');
     if(prev) prev.classList.remove('current-paragraph');
   }
-  var cur = document.querySelector('[data-para="'+bestId+'"]');
-  if(cur){
-    cur.classList.add('current-paragraph');
-    // Scroll into view if Follow is on and user hasn't manually scrolled in last 8s
+  var curEl = art.querySelector('[data-para="'+CSS.escape(bestId)+'"]');
+  if(curEl){
+    curEl.classList.add('current-paragraph');
     if(_premiumFollowOn && (Date.now() - _premiumLastManualScroll > 8000)){
-      cur.scrollIntoView({behavior:'smooth', block:'center'});
+      curEl.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  } else {
+    if(!window._premiumMissLogged){ window._premiumMissLogged = {}; }
+    if(!window._premiumMissLogged[bestId]){
+      window._premiumMissLogged[bestId] = true;
+      console.warn('paragraph element not found: data-para="'+bestId+'"');
     }
   }
   _premiumActivePara = bestId;
@@ -7758,6 +7766,25 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
+</script>
+<script>
+// Auto-scroll boot check (runs once when audio is first loaded)
+(function(){
+  var checked = false;
+  document.addEventListener('play', function(e){
+    if(checked || e.target.id !== 'premium-audio') return;
+    checked = true;
+    var keys = (window.AUDIO_PARA_TIMES && Object.keys(AUDIO_PARA_TIMES)) || [];
+    var art = document.getElementById('book-content-' + currentBookId);
+    var domCount = art ? art.querySelectorAll('[data-para]').length : 0;
+    console.log('auto-scroll ready — AUDIO_PARA_TIMES keys:', keys.length, 'DOM data-para paragraphs in book '+currentBookId+':', domCount);
+    if(keys.length > 0){
+      var sampleKey = keys[Math.floor(keys.length/2)];
+      var el = art && art.querySelector('[data-para="'+CSS.escape(sampleKey)+'"]');
+      console.log('sample key:', sampleKey, '→', el ? 'FOUND' : 'NOT FOUND in DOM');
+    }
+  }, true);
+})();
 </script>
 </body>
 </html>
