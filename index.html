@@ -7225,7 +7225,7 @@ const AUDIO_CHAPTER_TIMES = {
 function premiumSeekToTime(bookId, seconds){
   const parts = AUDIO_BOOKS[bookId];
   const durations = (AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[bookId]) || [Infinity];
-  if(!parts || !parts.length){ console.warn('premiumSeekToTime: no parts for', bookId); return false; }
+  if(!parts || !parts.length) return false;
   let remaining = seconds;
   let targetIdx = 0;
   for(let i = 0; i < parts.length; i++){
@@ -7237,14 +7237,13 @@ function premiumSeekToTime(bookId, seconds){
     remaining -= dur;
   }
   const a = document.getElementById('premium-audio');
-  if(!a){ console.warn('premiumSeekToTime: no audio element'); return false; }
-  console.log('premiumSeekToTime →', bookId, seconds, '→ part', targetIdx+1, 'at', remaining.toFixed(1)+'s');
+  if(!a) return false;
 
   const doSeek = () => {
     try{
       a.currentTime = remaining;
-      a.play().catch(err => console.warn('play rejected', err));
-    }catch(e){ console.warn('seek failed', e); }
+      a.play().catch(()=>{});
+    }catch(e){}
   };
 
   if(_premiumPartIdx === targetIdx && a.readyState >= 1){
@@ -7261,7 +7260,7 @@ function premiumSeekToTime(bookId, seconds){
       doSeek();
     };
     a.addEventListener('loadedmetadata', onReady);
-    try{ a.load(); }catch(e){ console.warn('load failed', e); }
+    try{ a.load(); }catch(e){}
   }
   return true;
 }
@@ -7314,17 +7313,8 @@ document.addEventListener('wheel', function(){ _premiumLastManualScroll = Date.n
 document.addEventListener('touchmove', function(){ _premiumLastManualScroll = Date.now(); }, {passive:true});
 
 function _premiumUpdateActivePara(audio){
-  if(!window._upaCount) window._upaCount = 0;
-  window._upaCount++;
-  if(!window.AUDIO_PARA_TIMES || Object.keys(AUDIO_PARA_TIMES).length === 0){
-    if(window._upaCount < 3) console.warn('auto-scroll: AUDIO_PARA_TIMES is empty/missing');
-    return;
-  }
-  if(!currentBookId){
-    if(window._upaCount < 3) console.warn('auto-scroll: currentBookId is null');
-    return;
-  }
-  if(window._upaCount === 1) console.log('auto-scroll: first timeupdate fired — AUDIO_PARA_TIMES has',Object.keys(AUDIO_PARA_TIMES).length,'keys; currentBookId=',currentBookId);
+  if(!window.AUDIO_PARA_TIMES || Object.keys(AUDIO_PARA_TIMES).length === 0) return;
+  if(!currentBookId) return;
   // Compute absolute audio time = sum of previous part durations + current playback time
   var abs_time = audio.currentTime || 0;
   var partDurs = (window.AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[currentBookId]) || [];
@@ -7338,10 +7328,9 @@ function _premiumUpdateActivePara(audio){
     if(t <= abs_time && t > bestT){ bestT = t; bestId = pid; }
   }
   if(!bestId || bestId === _premiumActivePara) return;
-  console.log('auto-scroll: new active paragraph →', bestId, 'at', bestT.toFixed(1)+'s (abs_time='+abs_time.toFixed(1)+'s)');
   // Scope queries to the CURRENT book's article (each book has its own data-para IDs)
   var art = document.getElementById('book-content-' + currentBookId);
-  if(!art){ console.warn('auto-scroll: article not found for', currentBookId); return; }
+  if(!art) return;
   // Remove highlight from previous
   if(_premiumActivePara){
     var prev = art.querySelector('[data-para="'+CSS.escape(_premiumActivePara)+'"]');
@@ -7352,12 +7341,6 @@ function _premiumUpdateActivePara(audio){
     curEl.classList.add('current-paragraph');
     if(_premiumFollowOn && (Date.now() - _premiumLastManualScroll > 8000)){
       curEl.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-  } else {
-    if(!window._premiumMissLogged){ window._premiumMissLogged = {}; }
-    if(!window._premiumMissLogged[bestId]){
-      window._premiumMissLogged[bestId] = true;
-      console.warn('paragraph element not found: data-para="'+bestId+'"');
     }
   }
   _premiumActivePara = bestId;
@@ -7779,55 +7762,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 });
-</script>
-<script>
-// Auto-scroll boot check (runs once when audio is first loaded)
-(function(){
-  var checked = false;
-  document.addEventListener('play', function(e){
-    if(checked || e.target.id !== 'premium-audio') return;
-    checked = true;
-    var keys = (window.AUDIO_PARA_TIMES && Object.keys(AUDIO_PARA_TIMES)) || [];
-    var art = document.getElementById('book-content-' + currentBookId);
-    var domCount = art ? art.querySelectorAll('[data-para]').length : 0;
-    console.log('auto-scroll ready — AUDIO_PARA_TIMES keys:', keys.length, 'DOM data-para paragraphs in book '+currentBookId+':', domCount);
-    if(keys.length > 0){
-      var sampleKey = keys[Math.floor(keys.length/2)];
-      var el = art && art.querySelector('[data-para="'+CSS.escape(sampleKey)+'"]');
-      console.log('sample key:', sampleKey, '→', el ? 'FOUND' : 'NOT FOUND in DOM');
-    }
-  }, true);
-})();
-</script>
-
-<div id="auto-scroll-debug" style="display:none;position:fixed;bottom:8px;right:8px;background:rgba(26,10,10,0.95);color:#d4b88c;border:1px solid #8b6a2a;border-radius:6px;padding:8px 10px;font-family:monospace;font-size:11px;max-width:360px;max-height:40vh;overflow-y:auto;z-index:99999;line-height:1.3;">
-  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #8b6a2a;padding-bottom:4px;margin-bottom:4px;">
-    <span style="font-weight:700;color:#e8c080;">🔍 Auto-scroll debug</span>
-    <button onclick="document.getElementById('auto-scroll-debug').style.display='none'" style="background:none;border:none;color:#d4b88c;font-size:14px;cursor:pointer;line-height:1;">✕</button>
-  </div>
-  <div id="auto-scroll-debug-log" style="white-space:pre-wrap;"></div>
-  <button onclick="navigator.clipboard.writeText(document.getElementById('auto-scroll-debug-log').textContent)" style="margin-top:6px;background:rgba(212,184,140,0.2);border:1px solid rgba(212,184,140,0.4);color:#d4b88c;font-size:10px;padding:3px 8px;border-radius:3px;cursor:pointer;">📋 Copy log</button>
-</div>
-<script>
-(function(){
-  var panel = document.getElementById('auto-scroll-debug');
-  var logEl = document.getElementById('auto-scroll-debug-log');
-  var origLog = console.log, origWarn = console.warn, origErr = console.error;
-  function append(level, args){
-    if(!panel || !logEl) return;
-    panel.style.display = 'block';
-    var msg = Array.prototype.slice.call(args).map(function(a){
-      if(typeof a === 'object'){ try{ return JSON.stringify(a); }catch(e){ return String(a); } }
-      return String(a);
-    }).join(' ');
-    var tag = level === 'warn' ? '⚠ ' : level === 'error' ? '❌ ' : '• ';
-    logEl.textContent += tag + msg + String.fromCharCode(10);
-    logEl.scrollTop = logEl.scrollHeight;
-  }
-  console.log  = function(){ origLog.apply(console, arguments);  append('log',  arguments); };
-  console.warn = function(){ origWarn.apply(console, arguments); append('warn', arguments); };
-  console.error= function(){ origErr.apply(console, arguments);  append('error', arguments); };
-})();
 </script>
 </body>
 </html>
