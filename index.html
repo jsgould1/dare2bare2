@@ -7218,7 +7218,6 @@ const AUDIO_CHAPTER_TIMES = {
     "s33-the-record": 13396.8,
     "s33-the-prints": 13964.4
   }
-}
 };
 
 // Seek the premium audio to a given time-in-seconds on the virtual full track.
@@ -7822,8 +7821,7 @@ document.addEventListener('DOMContentLoaded', function(){
       return String(a);
     }).join(' ');
     var tag = level === 'warn' ? '⚠ ' : level === 'error' ? '❌ ' : '• ';
-    logEl.textContent += tag + msg + '
-';
+    logEl.textContent += tag + msg + String.fromCharCode(10);
     logEl.scrollTop = logEl.scrollHeight;
   }
   console.log  = function(){ origLog.apply(console, arguments);  append('log',  arguments); };
