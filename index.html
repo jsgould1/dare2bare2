@@ -7221,22 +7221,31 @@ const AUDIO_CHAPTER_TIMES = {
 // Finds which part contains that time, loads it (if not already) and seeks.
 function premiumSeekToTime(bookId, seconds){
   const parts = AUDIO_BOOKS[bookId];
-  const durations = AUDIO_PART_DURATIONS[bookId] || [Infinity];
-  if(!parts || !parts.length) return false;
+  const durations = (AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[bookId]) || [Infinity];
+  if(!parts || !parts.length){ console.warn('premiumSeekToTime: no parts for', bookId); return false; }
   let remaining = seconds;
   let targetIdx = 0;
   for(let i = 0; i < parts.length; i++){
-    if(remaining < (durations[i] || Infinity) || i === parts.length - 1){
+    const dur = durations[i] || Infinity;
+    if(remaining < dur || i === parts.length - 1){
       targetIdx = i;
       break;
     }
-    remaining -= durations[i];
+    remaining -= dur;
   }
   const a = document.getElementById('premium-audio');
-  if(!a) return false;
-  // If we're already on the right part, seek directly; otherwise load then seek.
+  if(!a){ console.warn('premiumSeekToTime: no audio element'); return false; }
+  console.log('premiumSeekToTime →', bookId, seconds, '→ part', targetIdx+1, 'at', remaining.toFixed(1)+'s');
+
+  const doSeek = () => {
+    try{
+      a.currentTime = remaining;
+      a.play().catch(err => console.warn('play rejected', err));
+    }catch(e){ console.warn('seek failed', e); }
+  };
+
   if(_premiumPartIdx === targetIdx && a.readyState >= 1){
-    try{ a.currentTime = remaining; a.play().catch(()=>{}); }catch(e){}
+    doSeek();
   } else {
     _premiumPartIdx = targetIdx;
     a.innerHTML = '';
@@ -7246,10 +7255,10 @@ function premiumSeekToTime(bookId, seconds){
     a.appendChild(s);
     const onReady = () => {
       a.removeEventListener('loadedmetadata', onReady);
-      try{ a.currentTime = remaining; a.play().catch(()=>{}); }catch(e){}
+      doSeek();
     };
     a.addEventListener('loadedmetadata', onReady);
-    try{ a.load(); }catch(e){}
+    try{ a.load(); }catch(e){ console.warn('load failed', e); }
   }
   return true;
 }
@@ -7333,31 +7342,6 @@ function _premiumUpdateActivePara(audio){
   _premiumActivePara = bestId;
 }
 
-// Hook into the existing audio timeupdate handler
-(function(){
-  var origShow = window.premiumShowForBook;
-  window.premiumShowForBook = function(id){
-    if(origShow) origShow(id);
-    var a = document.getElementById('premium-audio');
-    if(!a) return;
-    var prevTU = a.ontimeupdate;
-    a.ontimeupdate = function(){
-      if(prevTU) prevTU.call(this);
-      _premiumUpdateActivePara(a);
-    };
-    // Clear active paragraph when stopping
-    var prevStop = window.premiumStop;
-    window.premiumStop = function(){
-      if(prevStop) prevStop();
-      if(_premiumActivePara){
-        var p = document.querySelector('[data-para="'+_premiumActivePara+'"]');
-        if(p) p.classList.remove('current-paragraph');
-        _premiumActivePara = null;
-      }
-    };
-  };
-})();
-
 function premiumShowForBook(id){
   const row = document.getElementById('premium-row');
   if(!row) return;
@@ -7372,7 +7356,12 @@ function premiumShowForBook(id){
       const partLabel = _premiumParts.length > 1 ? ' (' + (_premiumPartIdx+1) + '/' + _premiumParts.length + ')' : '';
       document.getElementById('premium-time').textContent = _fmtTime(c)+' / '+_fmtTime(d) + partLabel;
       const sk = document.getElementById('premium-seek');
-      if(d>0 && !sk._dragging) sk.value = (c/d*100).toFixed(2);
+      if(d>0 && !sk._dragging){
+        sk.value = (c/d*100).toFixed(2);
+        sk.style.setProperty('--pct', (c/d*100).toFixed(1)+'%');
+      }
+      // Auto-scroll + active paragraph highlight
+      if(typeof _premiumUpdateActivePara === 'function') _premiumUpdateActivePara(a);
     };
     a.onended = ()=>{
       // Auto-advance to next part; if last part, reset the UI.
@@ -7409,6 +7398,12 @@ function premiumStop(){
   const sk = document.getElementById('premium-seek'); if(sk) sk.value = 0;
   _premiumPartIdx = 0;
   if(_premiumParts) _premiumLoadPart(0, /*autoplay*/ false);
+  // Clear active paragraph highlight
+  if(typeof _premiumActivePara !== 'undefined' && _premiumActivePara){
+    const p = document.querySelector('[data-para="'+_premiumActivePara+'"]');
+    if(p) p.classList.remove('current-paragraph');
+    _premiumActivePara = null;
+  }
 }
 function premiumToggle(){
   const a = document.getElementById('premium-audio');
