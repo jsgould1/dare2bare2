@@ -232,6 +232,12 @@ body.night .itin-detail{color:#d4c8a8;}
   font-family: Georgia, serif;
 }
 
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
+.bee-edit{color:#8b1a5a;font-family:'Caveat','Brush Script MT','Lucida Handwriting',cursive;font-size:1.25em;font-weight:600;display:block;margin-top:4px;letter-spacing:0.01em;line-height:1.3;}
+.itinerary-card del{opacity:0.6;text-decoration-color:#8b1a5a;text-decoration-thickness:1.5px;color:#6b5a3a;}
+body.night .bee-edit{color:#e08bb3;}
+body.night .itinerary-card del{color:#998a70;}
 </style>
 </head>
 <body>
@@ -3014,15 +3020,25 @@ body.night .itin-detail{color:#d4c8a8;}
 <div class="itinerary-card" style="border-color:#8b1a5a;">
   <div class="itin-header">
     <div class="itin-title" style="color:#8b1a5a;">A Plan of My Own</div>
-    <div class="itin-subtitle">Written in the journal the first night</div>
+    <div class="itin-subtitle">My annotations, in red. Written in the journal the first night.</div>
     <div class="itin-dates">7 nights &nbsp;·&nbsp; Villa Florette</div>
   </div>
   <div class="itin-body">
     <div class="itin-day">
-      <div class="itin-day-label">Day One</div>
+      <div class="itin-day-label">Day One &mdash; Travel Day</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Settle. Choose what to wear. Begin.</div>
+          <div class="itin-detail">
+            <del>Business class, adjacent seats. Champagne on board. Enjoy the flight.</del>
+            <span class="bee-edit">Cage off before pushback. Key around my neck. A Face Time I will not forget.</span>
+          </div>
+        </div>
+        <div class="itin-entry">
+          <div class="itin-time">Arrival</div>
+          <div class="itin-detail">
+            <del>Villa check-in. Kitchen stocked. Flowers and champagne waiting.</del>
+            <span class="bee-edit">Settle. Choose what to wear. Four positions before dinner.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3030,7 +3046,18 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Two</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Coffee with him on the terrace. Start the ritual at dinner tonight.</div>
+          <div class="itin-time">Afternoon</div>
+          <div class="itin-detail">
+            <del>Settle in. The box on the bed is for her &mdash; let her choose what she likes.</del>
+            <span class="bee-edit">Coffee on the terrace. Read what he writes. Name the plan.</span>
+          </div>
+        </div>
+        <div class="itin-entry">
+          <div class="itin-time">Evening</div>
+          <div class="itin-detail">
+            <del>Dinner reservation, 8pm. The restaurant on the point. Enjoy.</del>
+            <span class="bee-edit">Start the ritual at dinner tonight. Every night after.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3038,7 +3065,11 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Three</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Arrange the excursion myself. Something after closing.</div>
+          <div class="itin-time">Day 3</div>
+          <div class="itin-detail">
+            <del>Jet ski excursion booked through the resort. 10am. Guide provided.</del>
+            <span class="bee-edit">Private booking, not the group one. Something after closing.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3046,7 +3077,18 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Four</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Rearrange the spa. A sketch in the afternoon. A night out.</div>
+          <div class="itin-time">2pm</div>
+          <div class="itin-detail">
+            <del>Couples spa &mdash; two side-by-side massages, 90 minutes each.</del>
+            <span class="bee-edit">Rearrange the spa. Single room. Hands the wife did not plan for.</span>
+          </div>
+        </div>
+        <div class="itin-entry">
+          <div class="itin-time">Evening</div>
+          <div class="itin-detail">
+            <del>Dinner at the villa. Cook together if you like.</del>
+            <span class="bee-edit">A sketch in the afternoon. A night out at the clubs.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3054,7 +3096,11 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Five</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">The day trip I noticed on arrival. Remy at three. A call with her at night.</div>
+          <div class="itin-time">Free</div>
+          <div class="itin-detail">
+            <del>Your time. Use it well.</del>
+            <span class="bee-edit">The day trip I noticed on arrival. Remy at three. A call with her at night.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3062,7 +3108,11 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Six</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Read what he writes. The fireworks &mdash; in the water, not on the blanket.</div>
+          <div class="itin-time">Night 6</div>
+          <div class="itin-detail">
+            <del>Beach fireworks display. Find a good spot on the sand.</del>
+            <span class="bee-edit">Read what he writes in the morning. The fireworks in the water, not on the blanket.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3070,7 +3120,18 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Seven</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">Remy again. The photographer. The videographer. The dinner. A promise.</div>
+          <div class="itin-time">5:30pm</div>
+          <div class="itin-detail">
+            <del>Beach portraits &mdash; Matthias, golden hour. Something to keep.</del>
+            <span class="bee-edit">Remy again. The photographer. The videographer. Something definitive.</span>
+          </div>
+        </div>
+        <div class="itin-entry">
+          <div class="itin-time">Evening</div>
+          <div class="itin-detail">
+            <del>Last dinner. Make it count. Happy anniversary.</del>
+            <span class="bee-edit">The dinner. The room. The promise on the record.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3078,14 +3139,29 @@ body.night .itin-detail{color:#d4c8a8;}
       <div class="itin-day-label">Day Eight</div>
       <div class="itin-entries">
         <div class="itin-entry">
-          <div class="itin-detail">One more walk into town. A shop in Gustavia. A plane.</div>
+          <div class="itin-detail">
+            <span class="bee-edit">Not on her plan. One more walk into town. A shop in Gustavia. A plane.</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
   <div class="itin-footer" style="color:#8b1a5a;">Not the weather report. The archive. &mdash; B</div>
 </div>
-<p class="story-para tts-only">Bee&#x27;s plan for the week, written in the leather journal on the first night. Day One. Settle. Choose what to wear. Begin. Day Two. Coffee with him on the terrace. Start the ritual at dinner tonight. Day Three. Arrange the excursion myself. Something after closing. Day Four. Rearrange the spa. A sketch in the afternoon. A night out. Day Five. The day trip I noticed on arrival. Remy at three. A call with her at night. Day Six. Read what he writes. The fireworks in the water, not on the blanket. Day Seven. Remy again. The photographer. The videographer. The dinner. A promise. Day Eight. One more walk into town. A shop in Gustavia. A plane. Footer. Not the weather report. The archive. Signed, B.</p>
+<p class="story-para tts-only">Bee&#x27;s plan for the week, written in the leather journal on the first night. Her annotations in red over her sister&#x27;s original.
+Day One. Crossed out: Business class, adjacent seats, champagne on board, enjoy the flight. Replaced with: Cage off before pushback. Key around my neck. A Face Time I will not forget.
+Crossed out: Villa check-in, kitchen stocked, flowers and champagne waiting. Replaced with: Settle. Choose what to wear. Four positions before dinner.
+Day Two. Crossed out: Settle in. The box on the bed is for her, let her choose what she likes. Replaced with: Coffee on the terrace. Read what he writes. Name the plan.
+Crossed out: Dinner reservation, 8pm, the restaurant on the point, enjoy. Replaced with: Start the ritual at dinner tonight. Every night after.
+Day Three. Crossed out: Jet ski excursion booked through the resort, 10am, guide provided. Replaced with: Private booking, not the group one. Something after closing.
+Day Four. Crossed out: Couples spa, two side-by-side massages, 90 minutes each. Replaced with: Rearrange the spa. Single room. Hands the wife did not plan for.
+Crossed out: Dinner at the villa, cook together if you like. Replaced with: A sketch in the afternoon. A night out at the clubs.
+Day Five. Crossed out: Free. Your time. Use it well. Replaced with: The day trip I noticed on arrival. Remy at three. A call with her at night.
+Day Six. Crossed out: Beach fireworks display, find a good spot on the sand. Replaced with: Read what he writes in the morning. The fireworks in the water, not on the blanket.
+Day Seven. Crossed out: Beach portraits, Matthias, golden hour, something to keep. Replaced with: Remy again. The photographer. The videographer. Something definitive.
+Crossed out: Last dinner, make it count, happy anniversary. Replaced with: The dinner. The room. The promise on the record.
+Day Eight. Added: Not on her plan. One more walk into town. A shop in Gustavia. A plane.
+Footer. Not the weather report. The archive. Signed, B.</p>
 
 <p class="story-para" data-para="bee-plan-outro-1">She closed the journal. She set the pen on top of it. She did not underline anything. She did not add emphasis. She had written it plainly because she intended to do every line of it, and she did not need to convince anyone who would later read it that she had meant what she had said.</p>
 <p class="story-para" data-para="bee-plan-outro-2">She turned off the lamp.</p>
