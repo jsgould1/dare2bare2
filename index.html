@@ -7311,8 +7311,17 @@ document.addEventListener('wheel', function(){ _premiumLastManualScroll = Date.n
 document.addEventListener('touchmove', function(){ _premiumLastManualScroll = Date.now(); }, {passive:true});
 
 function _premiumUpdateActivePara(audio){
-  if(!window.AUDIO_PARA_TIMES || Object.keys(AUDIO_PARA_TIMES).length === 0) return;
-  if(!currentBookId) return;
+  if(!window._upaCount) window._upaCount = 0;
+  window._upaCount++;
+  if(!window.AUDIO_PARA_TIMES || Object.keys(AUDIO_PARA_TIMES).length === 0){
+    if(window._upaCount < 3) console.warn('auto-scroll: AUDIO_PARA_TIMES is empty/missing');
+    return;
+  }
+  if(!currentBookId){
+    if(window._upaCount < 3) console.warn('auto-scroll: currentBookId is null');
+    return;
+  }
+  if(window._upaCount === 1) console.log('auto-scroll: first timeupdate fired — AUDIO_PARA_TIMES has',Object.keys(AUDIO_PARA_TIMES).length,'keys; currentBookId=',currentBookId);
   // Compute absolute audio time = sum of previous part durations + current playback time
   var abs_time = audio.currentTime || 0;
   var partDurs = (window.AUDIO_PART_DURATIONS && AUDIO_PART_DURATIONS[currentBookId]) || [];
@@ -7326,9 +7335,10 @@ function _premiumUpdateActivePara(audio){
     if(t <= abs_time && t > bestT){ bestT = t; bestId = pid; }
   }
   if(!bestId || bestId === _premiumActivePara) return;
+  console.log('auto-scroll: new active paragraph →', bestId, 'at', bestT.toFixed(1)+'s (abs_time='+abs_time.toFixed(1)+'s)');
   // Scope queries to the CURRENT book's article (each book has its own data-para IDs)
   var art = document.getElementById('book-content-' + currentBookId);
-  if(!art) return;
+  if(!art){ console.warn('auto-scroll: article not found for', currentBookId); return; }
   // Remove highlight from previous
   if(_premiumActivePara){
     var prev = art.querySelector('[data-para="'+CSS.escape(_premiumActivePara)+'"]');
