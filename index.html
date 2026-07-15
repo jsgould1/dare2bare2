@@ -265,10 +265,100 @@ body.night .photo-caption{color:#bda980;}
 body.night .shelf-book.has-cover{background:#f4f0e8;}
 body.night .shelf-book.has-cover .shelf-cover{background:#f4f0e8;}
 body.night .shelf-book.has-cover .shelf-meta{background:rgba(0,0,0,0.08);}
+
+/* ── COUPLES GAME — daily challenges + reward (real-time sync) ─────────────── */
+#shelf-play{max-width:700px;margin:0 auto;width:100%;padding:0 20px;}
+.play-cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;background:linear-gradient(135deg,#3a2036 0%,#241528 100%);border:1px solid #f4a8a8;border-radius:12px;padding:18px 20px;cursor:pointer;color:#f4a8a8;font-family:'Cinzel',serif;font-size:13px;letter-spacing:.16em;text-transform:uppercase;transition:transform .2s,box-shadow .2s;}
+.play-cta:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(244,168,168,.2);}
+.play-cta .play-cta-dice{font-size:22px;}
+.play-cta .play-cta-sub{display:block;font-family:'Crimson Text',Georgia,serif;font-style:italic;font-size:11px;letter-spacing:.04em;color:#b98aa0;text-transform:none;margin-top:3px;}
+
+#game{display:none;flex-direction:column;min-height:100vh;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;}
+#game.active{display:flex;}
+#game-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #2a2a3e;flex-shrink:0;position:sticky;top:0;z-index:10;background:rgba(26,26,46,.9);backdrop-filter:blur(6px);}
+#game-topbar .g-back{font-size:13px;color:#b4c8dc;background:none;border:none;cursor:pointer;font-family:inherit;padding:4px 8px;}
+#game-title{font-family:'Cinzel',serif;font-size:12px;letter-spacing:.18em;color:#f4a8a8;text-transform:uppercase;}
+#cg-sync{font-size:11px;letter-spacing:.08em;color:#c9a84c;min-width:60px;text-align:right;}
+#cg-root{flex:1;}
+.cg-wrap{max-width:640px;margin:0 auto;width:100%;padding:16px 16px 48px;}
+
+/* Setup */
+.cg-card{padding:2rem;border-radius:.5rem;background:linear-gradient(135deg,rgba(244,168,168,.2) 0%,rgba(232,137,154,.1) 100%);border:2px solid #f4a8a8;margin-bottom:2rem;}
+.cg-h2{font-size:1.5rem;color:#f4a8a8;font-family:Georgia,serif;margin-bottom:1.5rem;text-align:center;}
+.cg-section{margin-bottom:2rem;}
+.cg-h3{font-size:1rem;color:#f4a8a8;margin-bottom:1rem;}
+.cg-grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;}
+.cg-lvlbtn{padding:1rem;border-radius:.5rem;font-weight:500;color:#fff;border:2px solid #4a4a6a;background:rgba(42,42,62,.6);cursor:pointer;font-family:inherit;font-size:15px;}
+.cg-lvlbtn .cg-emoji{display:block;font-size:1.25rem;margin-bottom:.25rem;}
+.cg-lvlbtn.sel-her{border-color:#f4a8a8;background:rgba(244,168,168,.3);}
+.cg-lvlbtn.sel-his{border-color:#b4c8dc;background:rgba(180,200,220,.3);}
+.cg-start{width:100%;padding:1rem;border-radius:.5rem;font-weight:600;font-size:1rem;border:none;font-family:inherit;}
+.cg-start.ready{color:#1a1a2e;background:#f4a8a8;cursor:pointer;}
+.cg-start.disabled{color:#6b7280;background:#4a4a6a;opacity:.5;cursor:not-allowed;}
+
+/* Playing */
+.cg-header{text-align:center;margin-bottom:2rem;padding-top:1rem;}
+.cg-title{font-size:2rem;margin-bottom:.5rem;color:#f4a8a8;font-weight:bold;font-family:Georgia,serif;}
+.cg-sub{color:#d1d5db;font-size:.875rem;}
+.cg-progblock{margin-bottom:2rem;}
+.cg-progrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;color:#d1d5db;font-size:.875rem;font-weight:500;}
+.cg-fraction{font-size:1.25rem;color:#f4a8a8;font-family:Georgia,serif;}
+.cg-bar{width:100%;background:#2a2a3e;border-radius:9999px;height:12px;overflow:hidden;}
+.cg-bar-fill{height:100%;border-radius:9999px;background:linear-gradient(90deg,#f4a8a8 0%,#e8899a 100%);transition:width .5s ease;}
+.cg-slots{display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem;}
+
+.cg-locked{width:100%;padding:1.5rem;border-radius:.5rem;background:rgba(42,42,62,.6);border:2px dashed #4a4a6a;cursor:pointer;text-align:center;font-family:inherit;}
+.cg-lock{font-size:1.5rem;}
+.cg-locked-time{color:#fff;font-weight:500;margin-top:.5rem;}
+
+.cg-selected{padding:1rem;border-radius:.5rem;cursor:pointer;background:rgba(244,168,168,.08);border-left:4px solid #f4a8a8;display:flex;gap:.75rem;}
+.cg-selected.done{background:rgba(244,168,168,.15);}
+.cg-check{font-size:1.5rem;cursor:pointer;line-height:1;}
+.cg-selbody{flex:1;}
+.cg-sel-t{font-weight:500;color:#fff;font-size:1rem;}
+.cg-sel-t.struck{color:#9ca3af;text-decoration:line-through;}
+.cg-sel-d{font-size:.875rem;color:#9ca3af;margin-top:.25rem;}
+.cg-sel-time{font-size:.75rem;color:#6b7280;margin-top:.5rem;}
+
+.cg-expander{padding:1rem;border-radius:.5rem;background:rgba(244,168,168,.1);border:2px solid #f4a8a8;}
+.cg-slot-time{color:#fff;font-size:.875rem;margin-bottom:1rem;font-weight:500;}
+.cg-optlvls{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem;}
+.cg-optlvl{padding:.75rem;border-radius:.375rem;font-size:.75rem;font-weight:500;color:#fff;cursor:pointer;opacity:.7;font-family:inherit;}
+.cg-optlvl.on{opacity:1;}
+.cg-optlvl.lvl1{border:2px solid #b4c8dc;background:rgba(180,200,220,.5);}
+.cg-optlvl.lvl2{border:2px solid #f4a8a8;background:rgba(244,168,168,.4);}
+.cg-optlvl.lvl3{border:2px solid #dc5064;background:rgba(220,80,100,.5);}
+.cg-optlvl.lvl4{border:2px solid #8b0000;background:rgba(139,0,0,.6);}
+.cg-optlist{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem;}
+.cg-opt{padding:.75rem;border-radius:.375rem;text-align:left;background:rgba(42,42,62,.8);cursor:pointer;font-family:inherit;}
+.cg-opt.lvl1{border:1px solid #b4c8dc;}
+.cg-opt.lvl2{border:1px solid #f4a8a8;}
+.cg-opt.lvl3{border:1px solid #dc5064;}
+.cg-opt.lvl4{border:1px solid #8b0000;}
+.cg-opt-t{font-weight:500;color:#fff;font-size:.875rem;}
+.cg-opt-d{font-size:.75rem;color:#9ca3af;margin-top:.25rem;}
+.cg-cancel{width:100%;margin-top:1rem;padding:.5rem;border-radius:.375rem;font-size:.875rem;font-weight:500;color:#d1d5db;border:1px solid #4b5563;background:transparent;cursor:pointer;font-family:inherit;}
+
+.cg-reward{padding:1.5rem;border-radius:.5rem;margin-bottom:1.5rem;background:linear-gradient(135deg,rgba(244,168,168,.25) 0%,rgba(232,137,154,.15) 100%);border:2px solid #f4a8a8;}
+.cg-reward-h{font-size:1.25rem;color:#f4a8a8;font-family:Georgia,serif;margin-bottom:1rem;}
+.cg-reward-hint{color:#9ca3af;font-size:.875rem;font-style:italic;}
+.cg-reveal{width:100%;padding:1rem;border-radius:.375rem;font-weight:600;color:#1a1a2e;background:#f4a8a8;border:none;cursor:pointer;font-family:inherit;font-size:1rem;}
+.cg-reward-text{background:rgba(55,65,81,.4);padding:1rem;border-radius:.375rem;border-left:4px solid #f4a8a8;}
+.cg-reward-text p{color:#fff;font-size:1rem;line-height:1.5;font-family:Georgia,serif;}
+.cg-hide{margin-top:.75rem;padding:.4rem .75rem;border-radius:.375rem;font-size:.75rem;color:#d1d5db;border:1px solid #4b5563;background:transparent;cursor:pointer;font-family:inherit;}
+.cg-actions{display:flex;gap:.75rem;}
+.cg-reset{flex:1;padding:.75rem;border-radius:.375rem;font-weight:500;color:#fff;border:2px solid #4b5563;background:transparent;cursor:pointer;font-family:inherit;}
 </style>
+<script defer src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-<div id="shelf"><div id="shelf-header"><div id="shelf-title">DARE OR BARE</div><div id="shelf-sub">THE COMPLETE LIBRARY</div></div><div class="shelf-grid" id="shelf-grid"></div></div>
+<div id="shelf"><div id="shelf-header"><div id="shelf-title">DARE OR BARE</div><div id="shelf-sub">THE COMPLETE LIBRARY</div></div><div id="shelf-play"><div class="play-cta" onclick="openGame()"><span class="play-cta-dice">🎲</span><span>Play the Couples Game<span class="play-cta-sub">Daily challenges &amp; rewards — synced to both phones</span></span></div></div><div class="shelf-grid" id="shelf-grid"></div></div>
+
+<div id="game">
+  <div id="game-topbar"><button class="g-back" onclick="closeGame()">← LIBRARY</button><div id="game-title">TODAY&#39;S GAME</div><span id="cg-sync"></span></div>
+  <div id="cg-root"></div>
+</div>
 <div id="reader">
 <div id="toc-overlay" onclick="closeToc()"></div>
 <div id="toc-panel"><div class="toc-header">CHAPTERS</div><div class="toc-play-all" onclick="playFromStart()">▶  PLAY FROM START</div><div id="toc-list"></div></div>
@@ -7804,6 +7894,304 @@ function speakPara() {
 // Also call immediately in case DOMContentLoaded already fired
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   setTimeout(buildShelf, 0);
+}
+
+// ── COUPLES GAME — daily challenges + reward, real-time Firebase sync ─────────
+// Integrated as a third view alongside shelf + reader. Uses the Firebase compat
+// SDK loaded via CDN in <head>; degrades gracefully to local-only (localStorage)
+// if the SDK is blocked or offline, so the library app never breaks.
+const CG_FIREBASE_CONFIG = {
+  apiKey: "AIzaSyAnIL9zHwM65mk-axj9pOmf83LeueYyV-s",
+  authDomain: "couples-game-2fec8.firebaseapp.com",
+  projectId: "couples-game-2fec8",
+  storageBucket: "couples-game-2fec8.firebasestorage.app",
+  messagingSenderId: "126628558435",
+  appId: "1:126628558435:web:524b7c96f0fa68e8806a56",
+  measurementId: "G-RE79G996WL"
+};
+const CG_GAME_ID = 'couples-game-today';
+const CG_TIMES = ['10:00 AM', '2:00 PM', '5:00 PM', '8:00 PM', '11:00 PM'];
+const CG_HER_EMOJI = ['', '💋', '🌶️', '🔥', '💥'];
+const CG_HIS_EMOJI = ['', '😊', '🔥', '🌶️', '💥'];
+
+const CG_CHALLENGE_OPTIONS = {
+  level1: [
+    { title: 'Anticipation Text', description: 'Send her a flirty/dirty text building excitement about tonight' },
+    { title: 'Video Teaser', description: 'Record a video teasing what\'s coming - edging, multiple rounds' },
+    { title: 'Voice Message', description: 'Send a voicemail describing what you want to do' },
+    { title: 'Stamina Prep', description: 'Work out/exercise to build endurance' },
+    { title: 'Fantasy Buildup', description: 'Text her about her fantasy boyfriend scenario' },
+    { title: 'Breakdown Video', description: 'Record yourself eager and submissive' }
+  ],
+  level2: [
+    { title: 'Anticipation Text', description: 'Send her a flirty/dirty text building excitement' },
+    { title: 'Video Teaser', description: 'Record a video teasing what\'s coming' },
+    { title: 'Voice Message', description: 'Send a voicemail describing your desires' },
+    { title: 'Stamina Prep', description: 'Work out to build endurance' },
+    { title: 'Fantasy Buildup', description: 'Text her about her fantasy' },
+    { title: 'Breakdown Video', description: 'Record yourself eager' }
+  ],
+  level3: [
+    { title: 'Anticipation Text', description: 'Send her a flirty/dirty text' },
+    { title: 'Video Teaser', description: 'Record a video teasing' },
+    { title: 'Voice Message', description: 'Send a voicemail' },
+    { title: 'Stamina Prep', description: 'Work out' },
+    { title: 'Fantasy Buildup', description: 'Text her about fantasy' },
+    { title: 'Breakdown Video', description: 'Record yourself' }
+  ],
+  level4: [
+    { title: 'Anticipation Text', description: 'Send her a flirty/dirty text building excitement about tonight' },
+    { title: 'Video Teaser', description: 'Record a video teasing what\'s coming tonight' },
+    { title: 'Voice Message', description: 'Send a voicemail about your desires' },
+    { title: 'Stamina Prep', description: 'Work out to build endurance' },
+    { title: 'Fantasy Buildup', description: 'Text her about her fantasy boyfriend scenario' },
+    { title: 'Breakdown Video', description: 'Record yourself eager and submissive' }
+  ]
+};
+
+const CG_DEPOSIT_REWARDS = {
+  level1: 'You cum and she makes you taste it on your fingers, then pulls you to her clit and makes you lick the cream while she touches herself',
+  level2: 'You cum on her breasts and she makes you lick the cream from her tits while she touches herself, narrating how hot this is',
+  level3: 'You cum inside her, she hovers over your face making you beg. She drips it into your mouth while describing her fantasy boyfriend, then sits on your face',
+  level4: 'She goes back and forth from your cock to her pussy on your face, bringing your cum back each time. She controls pace and makes you beg while narrating her fantasy boyfriend'
+};
+
+function cgFreshChallenges() {
+  return CG_TIMES.map((t, i) => ({ id: i + 1, time: t, selectedChallenge: null, selectedLevel: null, completed: false }));
+}
+
+const cg = {
+  gameState: 'setup',
+  herTargetLevel: null,
+  hisRiskChoice: null,
+  challenges: cgFreshChallenges(),
+  nightReward: '',
+  // local-only (per device, not synced):
+  selectedCardId: null,
+  showingLevel: null,
+  rewardRevealed: false
+};
+
+let cgDb = null, cgUnsub = null, cgReady = false, cgApplyingRemote = false;
+
+function cgEsc(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function cgSetSync(mode) {
+  const el = document.getElementById('cg-sync');
+  if (!el) return;
+  if (mode === 'live') { el.textContent = '● Synced'; el.style.color = '#7dd3a0'; }
+  else { el.textContent = '○ Local'; el.style.color = '#c9a84c'; }
+}
+
+function cgApplyState(d) {
+  if (!d) return;
+  if (d.gameState) cg.gameState = d.gameState;
+  if ('herTargetLevel' in d) cg.herTargetLevel = d.herTargetLevel;
+  if ('hisRiskChoice' in d) cg.hisRiskChoice = d.hisRiskChoice;
+  if (Array.isArray(d.challenges) && d.challenges.length) cg.challenges = d.challenges;
+  if ('nightReward' in d) cg.nightReward = d.nightReward || '';
+}
+
+function cgInit() {
+  if (cgReady) return;
+  cgReady = true;
+  // 1) Instant local restore.
+  try {
+    const saved = JSON.parse(localStorage.getItem('cg-state') || 'null');
+    if (saved) cgApplyState(saved);
+  } catch (e) {}
+  // 2) Firebase real-time sync (optional).
+  try {
+    if (window.firebase && firebase.initializeApp) {
+      if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(CG_FIREBASE_CONFIG);
+      cgDb = firebase.firestore();
+      cgUnsub = cgDb.collection('games').doc(CG_GAME_ID).onSnapshot(function (snap) {
+        if (snap && snap.exists) {
+          cgApplyingRemote = true;
+          cgApplyState(snap.data());
+          cgApplyingRemote = false;
+          cgRender();
+        }
+      }, function (err) { console.warn('Couples game sync error:', err); cgSetSync('local'); });
+      cgSetSync('live');
+    } else {
+      cgSetSync('local');
+    }
+  } catch (e) {
+    console.warn('Couples game Firebase init failed:', e);
+    cgSetSync('local');
+  }
+}
+
+function cgSave() {
+  const payload = {
+    gameState: cg.gameState,
+    herTargetLevel: cg.herTargetLevel,
+    hisRiskChoice: cg.hisRiskChoice,
+    challenges: cg.challenges,
+    nightReward: cg.nightReward,
+    lastUpdated: new Date().toISOString()
+  };
+  try { localStorage.setItem('cg-state', JSON.stringify(payload)); } catch (e) {}
+  if (cgDb && !cgApplyingRemote) {
+    cgDb.collection('games').doc(CG_GAME_ID).set(payload, { merge: true })
+      .catch(function (err) { console.error('Error saving to Firebase:', err); });
+  }
+}
+
+// ── View switching ───────────────────────────────────────────────────────────
+function openGame() {
+  if (window.ttsStop) ttsStop();
+  if (window.premiumStop) premiumStop();
+  document.getElementById('shelf').style.display = 'none';
+  document.getElementById('reader').classList.remove('active');
+  document.getElementById('game').classList.add('active');
+  cgInit();
+  cgRender();
+  window.scrollTo(0, 0);
+}
+
+function closeGame() {
+  document.getElementById('game').classList.remove('active');
+  document.getElementById('shelf').style.display = '';
+}
+
+// ── Derived counts ────────────────────────────────────────────────────────────
+function cgSelectedCount() { return cg.challenges.filter(function (c) { return c.selectedChallenge; }).length; }
+function cgCompletedCount() { return cg.challenges.filter(function (c) { return c.completed; }).length; }
+
+// ── Handlers ──────────────────────────────────────────────────────────────────
+function cgSelectHer(l) { cg.herTargetLevel = l; cgRender(); }   // committed on Start
+function cgSelectHis(l) { cg.hisRiskChoice = l; cgRender(); }
+function cgStart() {
+  if (cg.herTargetLevel && cg.hisRiskChoice) { cg.gameState = 'playing'; cgSave(); cgRender(); }
+}
+function cgReset() {
+  cg.challenges = cg.challenges.map(function (c) {
+    return Object.assign({}, c, { completed: false, selectedChallenge: null, selectedLevel: null });
+  });
+  cg.gameState = 'setup';
+  cg.herTargetLevel = null;
+  cg.hisRiskChoice = null;
+  cg.selectedCardId = null;
+  cg.showingLevel = null;
+  cg.rewardRevealed = false;
+  cgSave();
+  cgRender();
+}
+function cgOpenCard(id) { cg.selectedCardId = id; cg.showingLevel = null; cgRender(); }
+function cgCancelCard() { cg.selectedCardId = null; cg.showingLevel = null; cgRender(); }
+function cgShowLevel(l) { cg.showingLevel = cg.showingLevel === l ? null : l; cgRender(); }
+function cgSelectChallenge(cardId, level, idx) {
+  const opt = (CG_CHALLENGE_OPTIONS['level' + level] || [])[idx];
+  if (!opt) return;
+  cg.challenges = cg.challenges.map(function (c) {
+    return c.id === cardId ? Object.assign({}, c, { selectedChallenge: opt, selectedLevel: level, completed: false }) : c;
+  });
+  cg.selectedCardId = null;
+  cg.showingLevel = null;
+  cgSave();
+  cgRender();
+}
+function cgToggleComplete(id) {
+  cg.challenges = cg.challenges.map(function (c) {
+    return c.id === id ? Object.assign({}, c, { completed: !c.completed }) : c;
+  });
+  cgSave();
+  cgRender();
+}
+function cgRevealReward() { cg.rewardRevealed = true; cgRender(); }
+function cgHideReward() { cg.rewardRevealed = false; cgRender(); }
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function cgRender() {
+  const root = document.getElementById('cg-root');
+  if (!root) return;
+  const titleEl = document.getElementById('game-title');
+  if (titleEl) titleEl.textContent = cg.gameState === 'setup' ? "TODAY'S NEGOTIATION" : "TODAY'S GAME";
+  root.innerHTML = cg.gameState === 'setup' ? cgRenderSetup() : cgRenderPlaying();
+}
+
+function cgRenderSetup() {
+  const herBtns = [1, 2, 3, 4].map(function (l) {
+    return '<button class="cg-lvlbtn' + (cg.herTargetLevel === l ? ' sel-her' : '') + '" onclick="cgSelectHer(' + l + ')"><span class="cg-emoji">' + CG_HER_EMOJI[l] + '</span>Level ' + l + '</button>';
+  }).join('');
+  const hisBtns = [1, 2, 3, 4].map(function (l) {
+    return '<button class="cg-lvlbtn' + (cg.hisRiskChoice === l ? ' sel-his' : '') + '" onclick="cgSelectHis(' + l + ')"><span class="cg-emoji">' + CG_HIS_EMOJI[l] + '</span>Level ' + l + '</button>';
+  }).join('');
+  const ready = cg.herTargetLevel && cg.hisRiskChoice;
+  return '' +
+    '<div class="cg-wrap">' +
+      '<div class="cg-card">' +
+        '<h2 class="cg-h2">Today’s Negotiation</h2>' +
+        '<div class="cg-section"><h3 class="cg-h3">Her Target Reward Level</h3><div class="cg-grid2">' + herBtns + '</div></div>' +
+        '<div class="cg-section"><h3 class="cg-h3">His Risk Level</h3><div class="cg-grid2">' + hisBtns + '</div></div>' +
+        '<button class="cg-start ' + (ready ? 'ready' : 'disabled') + '"' + (ready ? '' : ' disabled') + ' onclick="cgStart()">Start the Day 🔥</button>' +
+      '</div>' +
+    '</div>';
+}
+
+function cgSlot(c) {
+  if (cg.selectedCardId === c.id) {
+    const lvlBtns = [1, 2, 3, 4].map(function (l) {
+      return '<button class="cg-optlvl lvl' + l + (cg.showingLevel === l ? ' on' : '') + '" onclick="cgShowLevel(' + l + ')">' + CG_HIS_EMOJI[l] + '</button>';
+    }).join('');
+    let opts = '';
+    if (cg.showingLevel) {
+      const list = CG_CHALLENGE_OPTIONS['level' + cg.showingLevel] || [];
+      opts = '<div class="cg-optlist">' + list.map(function (o, idx) {
+        return '<button class="cg-opt lvl' + cg.showingLevel + '" onclick="cgSelectChallenge(' + c.id + ',' + cg.showingLevel + ',' + idx + ')"><div class="cg-opt-t">' + cgEsc(o.title) + '</div><div class="cg-opt-d">' + cgEsc(o.description) + '</div></button>';
+      }).join('') + '</div>';
+    }
+    return '<div class="cg-expander"><p class="cg-slot-time">' + cgEsc(c.time) + '</p><div class="cg-optlvls">' + lvlBtns + '</div>' + opts + '<button class="cg-cancel" onclick="cgCancelCard()">Cancel</button></div>';
+  }
+  if (c.selectedChallenge) {
+    return '<div class="cg-selected' + (c.completed ? ' done' : '') + '" onclick="cgOpenCard(' + c.id + ')">' +
+      '<div class="cg-check" onclick="event.stopPropagation();cgToggleComplete(' + c.id + ')">' + (c.completed ? '✓' : '⭕') + '</div>' +
+      '<div class="cg-selbody">' +
+        '<h3 class="cg-sel-t' + (c.completed ? ' struck' : '') + '">' + cgEsc(c.selectedChallenge.title) + '</h3>' +
+        '<p class="cg-sel-d">' + cgEsc(c.selectedChallenge.description) + '</p>' +
+        '<p class="cg-sel-time">' + cgEsc(c.time) + '</p>' +
+      '</div>' +
+    '</div>';
+  }
+  return '<button class="cg-locked" onclick="cgOpenCard(' + c.id + ')"><span class="cg-lock">🔒</span><p class="cg-locked-time">' + cgEsc(c.time) + '</p></button>';
+}
+
+function cgRenderPlaying() {
+  const total = cg.challenges.length;
+  const sel = cgSelectedCount();
+  const comp = cgCompletedCount();
+  const allSelected = sel === total;
+  const setupPct = (sel / total) * 100;
+  const compPct = (comp / total) * 100;
+
+  let rewardInner;
+  if (!allSelected) {
+    rewardInner = '<p class="cg-reward-hint">Select all 5 challenges to unlock tonight’s reward.</p>';
+  } else if (cg.rewardRevealed) {
+    rewardInner = '<div class="cg-reward-text"><p>' + cgEsc(CG_DEPOSIT_REWARDS['level' + cg.herTargetLevel]) + '</p><button class="cg-hide" onclick="cgHideReward()">Hide</button></div>';
+  } else {
+    rewardInner = '<button class="cg-reveal" onclick="cgRevealReward()">🔓 Reveal tonight’s reward</button>';
+  }
+
+  const secondBar = allSelected
+    ? '<div class="cg-progblock"><div class="cg-progrow"><span>Progress</span><span class="cg-fraction">' + comp + '/' + total + '</span></div><div class="cg-bar"><div class="cg-bar-fill" style="width:' + compPct + '%"></div></div></div>'
+    : '';
+
+  return '' +
+    '<div class="cg-wrap">' +
+      '<div class="cg-header"><h1 class="cg-title">Today’s Game</h1><p class="cg-sub">Level ' + cg.herTargetLevel + ' • Real-time Syncing ✓</p></div>' +
+      '<div class="cg-progblock"><div class="cg-progrow"><span>Setup</span><span class="cg-fraction">' + sel + '/' + total + '</span></div><div class="cg-bar"><div class="cg-bar-fill" style="width:' + setupPct + '%"></div></div></div>' +
+      '<div class="cg-slots">' + cg.challenges.map(cgSlot).join('') + '</div>' +
+      secondBar +
+      '<div class="cg-reward"><h2 class="cg-reward-h">✨ Tonight’s Reward ✨</h2>' + rewardInner + '</div>' +
+      '<div class="cg-actions"><button class="cg-reset" onclick="cgReset()">Reset</button></div>' +
+    '</div>';
 }
 </script>
 <script>

@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Firestore security rules for the Couples Game.
+//
+// These lock the data to a SINGLE shared account. Only a request that is
+// signed in (Email/Password) as that exact account may read or write, and
+// only under the `games/` collection. Everything else is denied by default.
+//
+// SETUP:
+//   1. Firebase console -> Authentication -> Sign-in method -> enable
+//      "Email/Password".
+//   2. Authentication -> Users -> Add user: create ONE account you both share
+//      (e.g. us@ourgame.com + a strong password).
+//   3. Replace YOUR_SHARED_EMAIL below with that exact email.
+//   4. Firestore -> Rules -> paste this file -> Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /games/{gameId} {
+      allow read, write: if request.auth != null
+        && request.auth.token.email == "YOUR_SHARED_EMAIL";
+    }
+
+    // Deny everything else.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
