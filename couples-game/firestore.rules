@@ -18,7 +18,7 @@ service cloud.firestore {
 
     match /games/{gameId} {
       allow read, write: if request.auth != null
-        && request.auth.token.email == "YOUR_SHARED_EMAIL";
+        && request.auth.token.email == "jsgould1@gmail.com";
     }
 
     // Deny everything else.
