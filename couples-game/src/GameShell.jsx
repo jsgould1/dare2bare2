@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import CouplesGame from './CouplesGameWithFirebase';
+import CouplesGameV3 from './CouplesGameV3';
 import ScenarioGame from './ScenarioGame';
 
 // Simple top tab switcher between the two game modes.
@@ -29,14 +29,14 @@ const tabBtn = (active) => ({
 });
 
 export default function GameShell() {
-  const [tab, setTab] = useState('challenges');
+  const [tab, setTab] = useState('daily');
   return (
     <div>
       <div style={barWrap}>
-        <button style={tabBtn(tab === 'challenges')} onClick={() => setTab('challenges')}>🏆 Daily Challenges</button>
+        <button style={tabBtn(tab === 'daily')} onClick={() => setTab('daily')}>🔥 Daily Game</button>
         <button style={tabBtn(tab === 'scenarios')} onClick={() => setTab('scenarios')}>💌 Tonight's Invitation</button>
       </div>
-      {tab === 'challenges' ? <CouplesGame /> : <ScenarioGame />}
+      {tab === 'daily' ? <CouplesGameV3 /> : <ScenarioGame />}
     </div>
   );
 }
